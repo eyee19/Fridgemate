@@ -5,4 +5,9 @@
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
     <color name="blueish">#3360FF</color>
+    <color name="darkMode">#a9a9a9</color>
+    <color name="statusBar">#000000</color>
+    <color name="appBar">#212121</color>
+    <color name="background">#303030</color>
+    <color name="cardsDialogs">#424242</color>
 </resources>
