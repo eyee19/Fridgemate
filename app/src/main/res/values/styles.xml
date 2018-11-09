@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/appBar</item>
         <item name="colorPrimaryDark">@color/statusBar</item>
         <item name="colorAccent">@color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,5 +22,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/cardsDialogs</item>
+    </style>
 
 </resources>
