@@ -2,6 +2,7 @@ package com.example.eyee3.fridgemate;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity
             }
         });*/
 
+        getSupportActionBar().setTitle("Fridgemate");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -81,7 +83,8 @@ public class MainActivity extends AppCompatActivity
 
             alertDialogBuilder
                     .setTitle("About Fridgemate")
-                    .setMessage("test")
+                    .setMessage("Made by: Everett Yee \nVersion 1.0 \n\nFridgemate helps you eat healthier, waste less food, and save you money. " +
+                            "What's not to love about that? ")
                     .setCancelable(false)
                     .setPositiveButton("Okay",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
@@ -95,7 +98,27 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(MainActivity.this, "Searching", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.action_help) {
-            Toast.makeText(MainActivity.this, "Helping", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    MainActivity.this, R.style.AlertDialogCustom);
+
+            alertDialogBuilder
+                    .setTitle("Open Fridgemate help in your browser?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            String url = "http://www.github.com/eyee19";
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        }
+                    })
+                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
             return true;
         }
 

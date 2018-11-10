@@ -7,6 +7,7 @@
         android:id="@+id/shopping_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_above="@+id/linearBottom"
         android:layout_weight="1">
     </ListView>
@@ -25,6 +26,7 @@
             android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColorHint="@color/darkMode"
             android:hint="Item"/>
 
         <Button

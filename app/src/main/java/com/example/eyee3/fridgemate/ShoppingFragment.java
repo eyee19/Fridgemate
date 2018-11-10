@@ -28,6 +28,7 @@ public class ShoppingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setTitle("Shopping Lists");
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
 
         /*String[] listItems = {"Item 1", "Item 2", "Item 3"};
