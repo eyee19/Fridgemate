@@ -145,12 +145,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_fridge:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new FridgeFragment()).commit();
-                Log.d("MainActivity", "MAKING FRIDGE FRAGMENT");
                 break;
             case R.id.nav_list:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ShoppingFragment()).commit();
-                Log.d("MainActivity", "MAKING LIST FRAGMENT");
                 break;
             case R.id.nav_recipe:
                 break;

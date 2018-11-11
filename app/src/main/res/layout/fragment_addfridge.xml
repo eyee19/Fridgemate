@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/background">
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:hint="Item Name"
+        android:textColorHint="@color/darkMode"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateAdded"
+        android:clickable="true"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/white"
+        android:inputType="none"
+        android:layout_below="@+id/name"
+        android:hint="Date Added"
+        android:textColorHint="@color/darkMode"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/expirationDate"
+        android:clickable="true"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/white"
+        android:inputType="none"
+        android:layout_below="@+id/dateAdded"
+        android:hint="Date of Expiration"
+        android:textColorHint="@color/darkMode"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addItemToFridge"
+        android:layout_below="@+id/expirationDate"
+        android:text="Add To Fridge"
+        android:textColor="@color/appBar"/>
+
+</RelativeLayout>
