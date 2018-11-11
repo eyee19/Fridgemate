@@ -151,6 +151,8 @@ public class MainActivity extends AppCompatActivity
                         new ShoppingFragment()).commit();
                 break;
             case R.id.nav_recipe:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CardFragment()).commit();
                 break;
             case R.id.nav_saved:
                 break;
