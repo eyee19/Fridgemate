@@ -28,15 +28,8 @@ public class ShoppingFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle("Shopping Lists");
+        getActivity().setTitle("Your Shopping Lists");
         View view = inflater.inflate(R.layout.fragment_shopping, container, false);
-
-        /*String[] listItems = {"Item 1", "Item 2", "Item 3"};
-        ListView listView = (ListView) view.findViewById(R.id.shopping_listView);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listItems);
-
-        listView.setAdapter(listViewAdapter);*/
 
         return view;
     }

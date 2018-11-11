@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:id="@+id/shoppingFragParent">
 
     <ListView
         android:id="@+id/shopping_listView"
@@ -27,13 +28,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColorHint="@color/darkMode"
+            android:focusableInTouchMode="true"
             android:hint="Item"/>
 
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"/>
+            android:layout_weight="0.2"
+            android:textColor="@color/appBar"
+            android:text="Add Item"/>
     </LinearLayout>
 
 </RelativeLayout>
