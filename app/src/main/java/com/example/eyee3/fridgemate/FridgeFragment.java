@@ -3,6 +3,7 @@ package com.example.eyee3.fridgemate;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class FridgeFragment extends Fragment {
 
     private ListView mFridgeList;
     private Button mAddButton;
+    private FloatingActionButton floatAdd;
     private ArrayAdapter<String> mAdapter;
 
     @Override
@@ -34,12 +36,21 @@ public class FridgeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mFridgeList = (ListView) getView().findViewById(R.id.fridge_listView);
-        mAddButton = (Button) getView().findViewById(R.id.add_button);
+        //mAddButton = (Button) getView().findViewById(R.id.add_button);
+        floatAdd = (FloatingActionButton) getView().findViewById(R.id.fabFridge);
 
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         mFridgeList.setAdapter(mAdapter);
 
-        mAddButton.setOnClickListener(new View.OnClickListener() {
+        /*mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AddFridgeFragment()).commit();
+            }
+        });*/
+
+        floatAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

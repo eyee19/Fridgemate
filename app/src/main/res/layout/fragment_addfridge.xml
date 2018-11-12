@@ -2,10 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/background">
-    
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/darkMode"
+        android:id="@+id/materialBox">
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Test hint" />
+    </android.support.design.widget.TextInputLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/materialBox"
         android:id="@+id/name"
         android:hint="Item Name"
         android:textColorHint="@color/darkMode"/>
@@ -41,5 +53,7 @@
         android:layout_below="@+id/expirationDate"
         android:text="Add To Fridge"
         android:textColor="@color/appBar"/>
+
+
 
 </RelativeLayout>

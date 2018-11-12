@@ -122,7 +122,6 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-
             holder.titleTextView.setText(list.get(position).getCardName());
             holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
             holder.coverImageView.setTag(list.get(position).getImageResourceId());
