@@ -24,7 +24,6 @@ public class ShoppingFragment extends Fragment {
     }
     private ListView mShoppingList;
     private EditText mItemEdit;
-    private Button mAddButton;
     private FloatingActionButton addList;
     private ArrayAdapter<String> mAdapter;
 
@@ -40,29 +39,10 @@ public class ShoppingFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mShoppingList = (ListView) getView().findViewById(R.id.shopping_listView);
         mItemEdit = (EditText) getView().findViewById(R.id.item_editText);
-        //mAddButton = (Button) getView().findViewById(R.id.add_button);
         addList = (FloatingActionButton) getView().findViewById(R.id.fabList);
 
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         mShoppingList.setAdapter(mAdapter);
-
-        /*mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String item = mItemEdit.getText().toString();
-
-                if (item.equals("")) {
-                    Toast.makeText(getActivity(), "You can't add an empty item!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mAdapter.add(item);
-                    Log.d("Shopping Fragment", "ITEM ADDED: " + item);
-                    mAdapter.notifyDataSetChanged();
-                    mItemEdit.setText("");
-                }
-
-            }
-        });*/
 
         addList.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,7 +22,6 @@ public class FridgeFragment extends Fragment {
     }
 
     private ListView mFridgeList;
-    private Button mAddButton;
     private FloatingActionButton floatAdd;
     private ArrayAdapter<String> mAdapter;
 
@@ -36,19 +35,10 @@ public class FridgeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mFridgeList = (ListView) getView().findViewById(R.id.fridge_listView);
-        //mAddButton = (Button) getView().findViewById(R.id.add_button);
         floatAdd = (FloatingActionButton) getView().findViewById(R.id.fabFridge);
 
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         mFridgeList.setAdapter(mAdapter);
-
-        /*mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AddFridgeFragment()).commit();
-            }
-        });*/
 
         floatAdd.setOnClickListener(new View.OnClickListener() {
             @Override

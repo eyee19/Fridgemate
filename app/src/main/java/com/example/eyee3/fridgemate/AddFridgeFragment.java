@@ -3,6 +3,7 @@ package com.example.eyee3.fridgemate;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AddFridgeFragment extends Fragment {
-
-    public AddFridgeFragment() {
-
-    }
-
-    private EditText itemName;
-    private EditText dateAdded;
-    private EditText expirationDate;
+    private TextInputEditText nameBox;
+    private TextInputEditText dateBox;
+    private TextInputEditText expirationBox;
     private Button addItem;
     DatePickerDialog picker;
 
@@ -39,9 +35,9 @@ public class AddFridgeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        itemName = (EditText) getView().findViewById(R.id.name);
-        dateAdded = (EditText) getView().findViewById(R.id.dateAdded);
-        expirationDate = (EditText) getView().findViewById(R.id.expirationDate);
+        nameBox = (TextInputEditText) getView().findViewById(R.id.nameInput);
+        dateBox = (TextInputEditText) getView().findViewById(R.id.dateInput);
+        expirationBox = (TextInputEditText) getView().findViewById(R.id.expirationInput);
         addItem = (Button) getView().findViewById(R.id.addItemToFridge);
 
         addItem.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +47,7 @@ public class AddFridgeFragment extends Fragment {
             }
         });
 
-        dateAdded.setOnClickListener(new View.OnClickListener() {
+        dateBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
@@ -63,14 +59,14 @@ public class AddFridgeFragment extends Fragment {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                dateAdded.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
+                                dateBox.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                             }
                         }, year, month, day);
                 picker.show();
             }
         });
 
-        expirationDate.setOnClickListener(new View.OnClickListener() {
+        expirationBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
@@ -82,7 +78,7 @@ public class AddFridgeFragment extends Fragment {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                expirationDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
+                                expirationBox.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                             }
                         }, year, month, day);
                 picker.show();
