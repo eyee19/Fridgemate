@@ -1,23 +1,34 @@
 package com.example.eyee3.fridgemate;
 
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CardFragment extends Fragment {
     ArrayList<RecipeModel> listitems = new ArrayList<>();
+    EditText searchInput;
+    Button addSearch;
+    Button goSearch;
+    TextView searching;
     RecyclerView MyRecyclerView;
     String Recipes[] = {"Recipe 1","Recipe 2","Recipe 3","Recipe 4","Recipe 5","Recipe 6","Recipe 7"};
     int  Images[] = {R.drawable.fridge_splash, R.drawable.fridge_splash, R.drawable.fridge_splash, R.drawable.fridge_splash,
@@ -44,6 +55,29 @@ public class CardFragment extends Fragment {
         MyRecyclerView.setLayoutManager(MyLayoutManager);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        searchInput = (EditText) view.findViewById(R.id.searchBox);
+        addSearch = (Button) view.findViewById(R.id.plus);
+        goSearch = (Button) view.findViewById(R.id.search);
+        searching = (TextView) view.findViewById(R.id.searchingFor);
+
+        addSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searching.append(searchInput.getText().toString() + ",");
+            }
+        });
+
+        goSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fullSearch = searching.getText().toString();
+                Toast.makeText(getActivity(), "Searching for " + fullSearch, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void initializeList() {

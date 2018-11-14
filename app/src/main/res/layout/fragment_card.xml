@@ -3,8 +3,51 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/background">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/topLayout"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchBox"
+            android:layout_weight="0.4"
+            android:hint="Search Recipes"
+            android:textColor="@color/white"
+            android:textColorHint="@color/darkMode"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/plus"
+            android:textColor="@color/appBar"
+            android:text="Add"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"
+            android:layout_weight="1"
+            android:textColor="@color/appBar"
+            android:text="Go"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchingFor"
+        android:textSize="6pt"
+        android:layout_below="@id/topLayout"
+        android:hint="Add one word at a time"
+        android:textColorHint="@color/white"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardView"
+        android:layout_below="@id/searchingFor"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
