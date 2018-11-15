@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,10 +38,11 @@ import java.util.Calendar;
 public class CardFragment extends Fragment {
     ArrayList<RecipeModel> listitems = new ArrayList<>();
     EditText searchInput;
-    Button addSearch;
-    Button clearAll;
-    Button goSearch;
+    ImageButton addSearch;
+    ImageButton clearAll;
+    ImageButton goSearch;
     TextView searching;
+    boolean addBool = false;
     RecyclerView MyRecyclerView;
     static final String API_URL = "http://www.recipepuppy.com/api/?i=";
     String Recipes[] = {"Recipe 1","Recipe 2","Recipe 3","Recipe 4","Recipe 5","Recipe 6","Recipe 7"};
@@ -73,16 +75,22 @@ public class CardFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         searchInput = (EditText) view.findViewById(R.id.searchBox);
-        addSearch = (Button) view.findViewById(R.id.plus);
-        clearAll = (Button) view.findViewById(R.id.clearAll);
-        goSearch = (Button) view.findViewById(R.id.search);
+        addSearch = (ImageButton) view.findViewById(R.id.plus);
+        clearAll = (ImageButton) view.findViewById(R.id.clearAll);
+        goSearch = (ImageButton) view.findViewById(R.id.search);
         searching = (TextView) view.findViewById(R.id.searchingFor);
 
         addSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searching.append(searchInput.getText().toString() + ",");
-                searchInput.setText("");
+                if (searchInput.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    searching.append(searchInput.getText().toString() + ",");
+                    searchInput.setText("");
+                    addBool = true;
+                }
             }
         });
 
@@ -91,13 +99,19 @@ public class CardFragment extends Fragment {
             public void onClick(View v) {
                 searchInput.setText("");
                 searching.setText("");
+                addBool = false;
             }
         });
 
         goSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new RetrieveFeedTask().execute();
+                if (addBool == true) {
+                    new RetrieveFeedTask().execute();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Add An Item to Search First", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
