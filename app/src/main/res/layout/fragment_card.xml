@@ -22,17 +22,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:id="@+id/plus"
-            android:textColor="@color/appBar"
-            android:text="Add"/>
+            android:drawableTop="@drawable/ic_add_black_24dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/clearAll"
+            android:drawableTop="@drawable/ic_delete_black_24dp"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/search"
             android:layout_weight="1"
-            android:textColor="@color/appBar"
-            android:text="Go"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:drawableTop="@drawable/ic_send_black_24dp"/>
 
     </LinearLayout>
 
