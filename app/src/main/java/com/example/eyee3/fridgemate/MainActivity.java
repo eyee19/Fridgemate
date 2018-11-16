@@ -106,9 +106,6 @@ public class MainActivity extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
             return true;
-        } else if (id == R.id.action_search) {
-            Toast.makeText(MainActivity.this, "Searching", Toast.LENGTH_SHORT).show();
-            return true;
         } else if (id == R.id.action_help) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     MainActivity.this, R.style.AlertDialogCustom);

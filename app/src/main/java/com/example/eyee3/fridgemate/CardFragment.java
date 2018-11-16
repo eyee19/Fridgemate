@@ -4,9 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -24,12 +27,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,6 +49,7 @@ public class CardFragment extends Fragment {
     ImageButton clearAll;
     ImageButton goSearch;
     TextView searching;
+    //ImageView thumbnail;
     static View.OnClickListener myOnClickListener;
     boolean addBool = false;
     RecyclerView MyRecyclerView;
@@ -63,9 +70,7 @@ public class CardFragment extends Fragment {
         MyRecyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        /*if (listitems.size() > 0 & MyRecyclerView != null) {*/
-            MyRecyclerView.setAdapter(new MyAdapter(listitems));
-        //}
+        MyRecyclerView.setAdapter(new MyAdapter(listitems));
         MyRecyclerView.setLayoutManager(MyLayoutManager);
 
         return view;
@@ -78,6 +83,7 @@ public class CardFragment extends Fragment {
         clearAll = (ImageButton) view.findViewById(R.id.clearAll);
         goSearch = (ImageButton) view.findViewById(R.id.search);
         searching = (TextView) view.findViewById(R.id.searchingFor);
+        //thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
 
         addSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +113,7 @@ public class CardFragment extends Fragment {
             public void onClick(View v) {
                 if (addBool == true) {
                     new RetrieveFeedTask().execute();
+                    //searching.setText("");
                     addBool = false;
                 }
                 else {
@@ -128,12 +135,14 @@ public class CardFragment extends Fragment {
     }*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        //public ImageView thumbnail;
         public TextView titleTextView;
         public TextView ingredientsTextView;
         public TextView labelTextView;
 
         public MyViewHolder(View v) {
             super(v);
+            //thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
             ingredientsTextView = (TextView) v.findViewById(R.id.ingredientsTextView);
             labelTextView = (TextView) v.findViewById(R.id.labelTextView);
@@ -160,9 +169,27 @@ public class CardFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.titleTextView.setText(list.get(position).getCardName());
             holder.ingredientsTextView.setText(list.get(position).getIngredientsList());
+            holder.titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = list.get(position).getLink();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
+            holder.ingredientsTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = list.get(position).getLink();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
         }
 
         @Override
@@ -181,7 +208,6 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -237,6 +263,7 @@ public class CardFragment extends Fragment {
                     String title = recipe.getString("title");
                     String link = recipe.getString("href");
                     String ingredients = recipe.getString("ingredients");
+                    String thumbnailpic = recipe.getString("thumbnail");
 
                     String trimmedTitle = title.split("\\r\\n")[0];
 
