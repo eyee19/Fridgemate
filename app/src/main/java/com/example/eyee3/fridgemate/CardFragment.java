@@ -2,6 +2,7 @@ package com.example.eyee3.fridgemate;
 
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -42,12 +43,11 @@ public class CardFragment extends Fragment {
     ImageButton clearAll;
     ImageButton goSearch;
     TextView searching;
+    static View.OnClickListener myOnClickListener;
     boolean addBool = false;
     RecyclerView MyRecyclerView;
     static final String API_URL = "http://www.recipepuppy.com/api/?i=";
     String Recipes[] = {"Recipe 1","Recipe 2","Recipe 3","Recipe 4","Recipe 5","Recipe 6","Recipe 7"};
-    int  Images[] = {R.drawable.fridge_splash, R.drawable.fridge_splash, R.drawable.fridge_splash, R.drawable.fridge_splash,
-            R.drawable.fridge_splash, R.drawable.fridge_splash, R.drawable.fridge_splash};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class CardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card, container, false);
-
+        myOnClickListener = new MyOnClickListener(getActivity());
         MyRecyclerView = (RecyclerView) view.findViewById(R.id.cardView);
         MyRecyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
@@ -108,6 +108,7 @@ public class CardFragment extends Fragment {
             public void onClick(View v) {
                 if (addBool == true) {
                     new RetrieveFeedTask().execute();
+                    addBool = false;
                 }
                 else {
                     Toast.makeText(getActivity(), "Add An Item to Search First", Toast.LENGTH_SHORT).show();
@@ -122,7 +123,7 @@ public class CardFragment extends Fragment {
         for(int i =0;i<7;i++){
             RecipeModel item = new RecipeModel();
             item.setCardName(Recipes[i]);
-            item.setImageResourceId(Images[i]);
+            //item.setImageResourceId(Images[i]);
             item.setIsfav(0);
             item.setIsturned(0);
             listitems.add(item);
@@ -131,46 +132,11 @@ public class CardFragment extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
-        public ImageView coverImageView;
-        public ImageView likeImageView;
-        public ImageView shareImageView;
 
         public MyViewHolder(View v) {
             super(v);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
-            coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
-            likeImageView = (ImageView) v.findViewById(R.id.likeImageView);
-            shareImageView = (ImageView) v.findViewById(R.id.shareImageView);
-            likeImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int id = (int)likeImageView.getTag();
-                    if( id == R.drawable.ic_bookmark_darkgray_24dp) {
-                        likeImageView.setTag(R.drawable.ic_bookmark_skyblue_24dp);
-                        likeImageView.setImageResource(R.drawable.ic_bookmark_skyblue_24dp);
-                        Toast.makeText(getActivity(),titleTextView.getText()+" added to favorites",Toast.LENGTH_SHORT).show();
-                    }
-                    else  {
-                        likeImageView.setTag(R.drawable.ic_bookmark_darkgray_24dp);
-                        likeImageView.setImageResource(R.drawable.ic_bookmark_darkgray_24dp);
-                        Toast.makeText(getActivity(),titleTextView.getText()+" removed from favorites",Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
 
-            shareImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-                            "://" + getResources().getResourcePackageName(coverImageView.getId())
-                            + '/' + "drawable" + '/' + getResources().getResourceEntryName((int)coverImageView.getTag()));
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
-                    shareIntent.setType("image/jpeg");
-                    startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-                }
-            });
         }
     }
 
@@ -186,6 +152,9 @@ public class CardFragment extends Fragment {
             // create a new view
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycle_items, parent, false);
+
+            view.setOnClickListener(CardFragment.myOnClickListener);
+
             MyViewHolder holder = new MyViewHolder(view);
             return holder;
         }
@@ -193,14 +162,25 @@ public class CardFragment extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             holder.titleTextView.setText(list.get(position).getCardName());
-            holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
-            holder.coverImageView.setTag(list.get(position).getImageResourceId());
-            holder.likeImageView.setTag(R.drawable.ic_bookmark_darkgray_24dp);
         }
 
         @Override
         public int getItemCount() {
             return list.size();
+        }
+    }
+
+    private class MyOnClickListener implements View.OnClickListener {
+
+        private final Context context;
+
+        private MyOnClickListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -248,9 +228,6 @@ public class CardFragment extends Fragment {
 
             try {
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-                //String requestID = object.getString("requestId");
-                //int likelihood = object.getInt("likelihood");
-                //JSONArray photos = object.getJSONArray("photos");
 
                 JSONArray results = object.getJSONArray("results");
                 Log.d("CardFragment", "RESULTS ARRAY: " + results);
@@ -262,12 +239,10 @@ public class CardFragment extends Fragment {
                     String title = recipe.getString("title");
                     String link = recipe.getString("href");
                     String ingredients = recipe.getString("ingredients");
-                    String thumbnail = recipe.getString("thumbnail");
 
-                    Log.d("CardFragment","INDIVIDUAL: " + title);
-                    Log.d("CardFragment","INDIVIDUAL: " + link);
-                    Log.d("CardFragment","INDIVIDUAL: " + ingredients);
-                    Log.d("CardFragment","INDIVIDUAL: " + thumbnail);
+                    Log.d("CardFragment","INDIVIDUAL TITLE: " + title);
+                    Log.d("CardFragment","INDIVIDUAL LINK: " + link);
+                    Log.d("CardFragment","INDIVIDUAL INGREDIENTS : " + ingredients);
                 }
 
             } catch (JSONException e) {

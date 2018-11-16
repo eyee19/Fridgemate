@@ -2,7 +2,9 @@ package com.example.eyee3.fridgemate;
 
 public class RecipeModel {
     String cardName;
-    int imageResourceId;
+    //int imageResourceId;
+    String ingredientsList;
+    String link;
     int isfav;
     int isturned;
 
@@ -30,11 +32,13 @@ public class RecipeModel {
         this.cardName = cardName;
     }
 
-    public int getImageResourceId() {
-        return imageResourceId;
-    }
+    public String getIngredientsList() { return ingredientsList; }
 
-    public void setImageResourceId(int imageResourceId) {
-        this.imageResourceId = imageResourceId;
+    public void setIngredientsList(String ingredientsList) { this.ingredientsList = ingredientsList; }
+
+    public String getLink() { return link; }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
