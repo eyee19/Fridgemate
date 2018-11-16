@@ -47,12 +47,11 @@ public class CardFragment extends Fragment {
     boolean addBool = false;
     RecyclerView MyRecyclerView;
     static final String API_URL = "http://www.recipepuppy.com/api/?i=";
-    String Recipes[] = {"Recipe 1","Recipe 2","Recipe 3","Recipe 4","Recipe 5","Recipe 6","Recipe 7"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeList();
+        //initializeList();
         getActivity().setTitle("Recipes");
     }
 
@@ -64,9 +63,9 @@ public class CardFragment extends Fragment {
         MyRecyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        if (listitems.size() > 0 & MyRecyclerView != null) {
+        /*if (listitems.size() > 0 & MyRecyclerView != null) {*/
             MyRecyclerView.setAdapter(new MyAdapter(listitems));
-        }
+        //}
         MyRecyclerView.setLayoutManager(MyLayoutManager);
 
         return view;
@@ -117,25 +116,27 @@ public class CardFragment extends Fragment {
         });
     }
 
-    public void initializeList() {
+    /*public void initializeList() {
         listitems.clear();
 
-        for(int i =0;i<7;i++){
+        for(int i = 0; i < 11; i++){
             RecipeModel item = new RecipeModel();
             item.setCardName(Recipes[i]);
-            //item.setImageResourceId(Images[i]);
-            item.setIsfav(0);
             item.setIsturned(0);
             listitems.add(item);
         }
-    }
+    }*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
+        public TextView ingredientsTextView;
+        public TextView labelTextView;
 
         public MyViewHolder(View v) {
             super(v);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
+            ingredientsTextView = (TextView) v.findViewById(R.id.ingredientsTextView);
+            labelTextView = (TextView) v.findViewById(R.id.labelTextView);
 
         }
     }
@@ -152,7 +153,6 @@ public class CardFragment extends Fragment {
             // create a new view
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycle_items, parent, false);
-
             view.setOnClickListener(CardFragment.myOnClickListener);
 
             MyViewHolder holder = new MyViewHolder(view);
@@ -162,6 +162,7 @@ public class CardFragment extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             holder.titleTextView.setText(list.get(position).getCardName());
+            holder.ingredientsTextView.setText(list.get(position).getIngredientsList());
         }
 
         @Override
@@ -221,8 +222,6 @@ public class CardFragment extends Fragment {
             if (response == null) {
                 response = "THERE WAS AN ERROR";
             }
-
-            //searching.setText(response);
             Log.d("URL PASSED", response);
 
 
@@ -230,8 +229,7 @@ public class CardFragment extends Fragment {
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
 
                 JSONArray results = object.getJSONArray("results");
-                Log.d("CardFragment", "RESULTS ARRAY: " + results);
-
+                listitems.clear();
                 for(int n = 0; n < results.length(); n++)
                 {
                     JSONObject recipe = results.getJSONObject(n);
@@ -240,9 +238,18 @@ public class CardFragment extends Fragment {
                     String link = recipe.getString("href");
                     String ingredients = recipe.getString("ingredients");
 
-                    Log.d("CardFragment","INDIVIDUAL TITLE: " + title);
+                    String trimmedTitle = title.split("\\r\\n")[0];
+
+                    /*Log.d("CardFragment","INDIVIDUAL TITLE: " + trimmedTitle);
                     Log.d("CardFragment","INDIVIDUAL LINK: " + link);
-                    Log.d("CardFragment","INDIVIDUAL INGREDIENTS : " + ingredients);
+                    Log.d("CardFragment","INDIVIDUAL INGREDIENTS : " + ingredients);*/
+
+                    RecipeModel item = new RecipeModel();
+                    item.setCardName(trimmedTitle);
+                    item.setLink(link);
+                    item.setIngredientsList(ingredients);
+                    listitems.add(item);
+                    MyRecyclerView.getAdapter().notifyDataSetChanged();
                 }
 
             } catch (JSONException e) {
