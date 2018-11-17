@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,7 +51,6 @@ public class CardFragment extends Fragment {
     ImageButton clearAll;
     ImageButton goSearch;
     TextView searching;
-    //ImageView thumbnail;
     static View.OnClickListener myOnClickListener;
     boolean addBool = false;
     RecyclerView MyRecyclerView;
@@ -83,7 +84,6 @@ public class CardFragment extends Fragment {
         clearAll = (ImageButton) view.findViewById(R.id.clearAll);
         goSearch = (ImageButton) view.findViewById(R.id.search);
         searching = (TextView) view.findViewById(R.id.searchingFor);
-        //thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
 
         addSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,10 +111,18 @@ public class CardFragment extends Fragment {
         goSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addBool == true) {
+                ConnectivityManager cm =
+                        (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+                if (addBool == true && isConnected == true) {
                     new RetrieveFeedTask().execute();
                     //searching.setText("");
                     addBool = false;
+                }
+                else if (isConnected == false) {
+                    Toast.makeText(getActivity(), "Error: no internet connection", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(getActivity(), "Add An Item to Search First", Toast.LENGTH_SHORT).show();
@@ -135,17 +143,17 @@ public class CardFragment extends Fragment {
     }*/
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        //public ImageView thumbnail;
         public TextView titleTextView;
         public TextView ingredientsTextView;
         public TextView labelTextView;
+        public ImageView thumbImage;
 
         public MyViewHolder(View v) {
             super(v);
-            //thumbnail = (ImageView) v.findViewById(R.id.thumbnail);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
             ingredientsTextView = (TextView) v.findViewById(R.id.ingredientsTextView);
             labelTextView = (TextView) v.findViewById(R.id.labelTextView);
+            thumbImage = (ImageView) v.findViewById(R.id.picture);
 
         }
     }
@@ -212,7 +220,7 @@ public class CardFragment extends Fragment {
     }
 
     class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
-
+        ImageView thumb = getView().findViewById(R.id.picture);
         private Exception exception;
 
         protected void onPreExecute() {
@@ -247,14 +255,14 @@ public class CardFragment extends Fragment {
         protected void onPostExecute(String response) {
             if (response == null) {
                 response = "THERE WAS AN ERROR";
+                Toast.makeText(getActivity(), "Error: no response. Check your internet connection", Toast.LENGTH_SHORT).show();
             }
-            Log.d("URL PASSED", response);
-
 
             try {
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
 
                 JSONArray results = object.getJSONArray("results");
+
                 listitems.clear();
                 for(int n = 0; n < results.length(); n++)
                 {
@@ -265,23 +273,49 @@ public class CardFragment extends Fragment {
                     String ingredients = recipe.getString("ingredients");
                     String thumbnailpic = recipe.getString("thumbnail");
 
-                    String trimmedTitle = title.split("\\r\\n")[0];
-
-                    /*Log.d("CardFragment","INDIVIDUAL TITLE: " + trimmedTitle);
-                    Log.d("CardFragment","INDIVIDUAL LINK: " + link);
-                    Log.d("CardFragment","INDIVIDUAL INGREDIENTS : " + ingredients);*/
+                    String trimmedTitle = title.replaceAll("(\\r|\\n|\\t)", "");
+                    String evenMoreTrim = trimmedTitle.trim();
+                    //new DownloadImageTask(thumb).execute(thumbnailpic);
+                    /*if (thumb == null) {
+                        Picasso.with(getActivity()).load("https://i.imgur.com/DvpvklR.png").into(thumb);
+                    }
+                    else {
+                        Picasso.with(getActivity()).load(thumbnailpic).into(thumb);
+                    }*/
 
                     RecipeModel item = new RecipeModel();
-                    item.setCardName(trimmedTitle);
+                    item.setCardName(evenMoreTrim);
                     item.setLink(link);
                     item.setIngredientsList(ingredients);
                     listitems.add(item);
                     MyRecyclerView.getAdapter().notifyDataSetChanged();
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap bmp = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                bmp = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }

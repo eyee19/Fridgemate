@@ -8,10 +8,22 @@
         card_view:cardCornerRadius="4dp"
         card_view:cardBackgroundColor="@color/darkMode">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:src="@drawable/fridge_splash"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|bottom"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/picture"
                 android:orientation="vertical">
 
                 <TextView
@@ -43,6 +55,9 @@
                     android:paddingLeft="16dp"
                     android:textColor="#FFFFFF" />
             </LinearLayout>
+        </RelativeLayout>
+
+
 
     </android.support.v7.widget.CardView>
 
