@@ -1,10 +1,16 @@
 package com.example.eyee3.fridgemate;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +28,10 @@ public class ShoppingFragment extends Fragment {
     public ShoppingFragment() {
 
     }
-    private ListView mShoppingList;
+    private SQLiteDatabase mDatabase;
+    private GroceryAdapter mAdapter;
     private EditText mItemEdit;
     private FloatingActionButton addList;
-    private ArrayAdapter<String> mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,28 +43,63 @@ public class ShoppingFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mShoppingList = (ListView) getView().findViewById(R.id.shopping_listView);
+        GroceryDBHelper dbHelper = new GroceryDBHelper(getActivity());
+        mDatabase = dbHelper.getWritableDatabase();
+        RecyclerView recyclerView = getView().findViewById(R.id.shopping_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new GroceryAdapter(getActivity(), getAllItems());
+        recyclerView.setAdapter(mAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                removeItem((long) viewHolder.itemView.getTag());
+            }
+        }).attachToRecyclerView(recyclerView);
+
         mItemEdit = (EditText) getView().findViewById(R.id.item_editText);
         addList = (FloatingActionButton) getView().findViewById(R.id.fabList);
-
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-        mShoppingList.setAdapter(mAdapter);
 
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String item = mItemEdit.getText().toString();
+                ContentValues cv = new ContentValues();
+                cv.put(GroceryContract.GroceryEntry.COLUMN_NAME, item);
 
-                if (item.equals("")) {
+                if (item.equals("") || mItemEdit.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "You can't add an empty item!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    mAdapter.add(item);
-                    Log.d("Shopping Fragment", "ITEM ADDED: " + item);
-                    mAdapter.notifyDataSetChanged();
+                    mDatabase.insert(GroceryContract.GroceryEntry.TABLE_NAME, null, cv);
+                    mAdapter.swapCursor(getAllItems());
                     mItemEdit.setText("");
                 }
             }
         });
+    }
+
+    private Cursor getAllItems() {
+        return mDatabase.query(
+                GroceryContract.GroceryEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                GroceryContract.GroceryEntry.COLUMN_TIMESTAMP + " DESC"
+        );
+    }
+
+    private void removeItem(long id) {
+        mDatabase.delete(GroceryContract.GroceryEntry.TABLE_NAME,
+                GroceryContract.GroceryEntry._ID + "=" + id, null);
+        mAdapter.swapCursor(getAllItems());
     }
 }
