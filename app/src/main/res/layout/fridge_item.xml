@@ -7,9 +7,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemName"
+        android:id="@+id/fridgeName"
         android:text="Empty Item"
         android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateAddedBox"
+        android:text="Date Added"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/expBox"
+        android:text="Expiration Date"
+        android:textSize="10sp"/>
 
     <View
         android:layout_width="fill_parent"

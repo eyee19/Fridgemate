@@ -29,22 +29,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColorHint="@color/darkMode"
-            android:focusableInTouchMode="true"
+            android:layout_marginLeft="16dp"
             android:hint="Item"/>
-
-        <!--<Button
-            android:id="@+id/add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:textColor="@color/appBar"
-            android:text="Add Item"/>-->
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
+            android:focusable="false"
             app:backgroundTint="@color/blueish"
             android:tint="@color/white"
             android:src="@drawable/ic_send_black_24dp" />

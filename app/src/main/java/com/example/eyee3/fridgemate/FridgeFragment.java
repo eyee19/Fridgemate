@@ -1,10 +1,15 @@
 package com.example.eyee3.fridgemate;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +25,9 @@ public class FridgeFragment extends Fragment {
     public FridgeFragment() {
 
     }
-
-    private ListView mFridgeList;
+    private SQLiteDatabase Fdatabase;
+    private FridgeAdapter fAdapter;
     private FloatingActionButton floatAdd;
-    private ArrayAdapter<String> mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,11 +38,27 @@ public class FridgeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mFridgeList = (ListView) getView().findViewById(R.id.fridge_listView);
-        floatAdd = (FloatingActionButton) getView().findViewById(R.id.fabFridge);
+        FridgeDBHelper dbHelperF = new FridgeDBHelper(getActivity());
+        Fdatabase = dbHelperF.getWritableDatabase();
+        RecyclerView recyclerViewF = getView().findViewById(R.id.fridge_recycler);
+        recyclerViewF.setLayoutManager(new LinearLayoutManager(getActivity()));
+        fAdapter = new FridgeAdapter(getActivity(), getAllItems());
+        recyclerViewF.setAdapter(fAdapter);
 
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-        mFridgeList.setAdapter(mAdapter);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                removeItem((long) viewHolder.itemView.getTag());
+            }
+        }).attachToRecyclerView(recyclerViewF);
+
+        floatAdd = (FloatingActionButton) getView().findViewById(R.id.fabFridge);
 
         floatAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,5 +67,23 @@ public class FridgeFragment extends Fragment {
                         new AddFridgeFragment()).commit();
             }
         });
+    }
+
+    private Cursor getAllItems() {
+        return Fdatabase.query(
+                FridgeContract.FridgeEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                FridgeContract.FridgeEntry.COLUMN_TIMESTAMP + " DESC"
+        );
+    }
+
+    private void removeItem(long id) {
+        Fdatabase.delete(FridgeContract.FridgeEntry.TABLE_NAME,
+                FridgeContract.FridgeEntry._ID + "=" + id, null);
+        fAdapter.swapCursor(getAllItems());
     }
 }
