@@ -10,6 +10,8 @@ public class FridgeContract {
         public static final String COLUMN_NAMEF = "nameF";
         public static final String COLUMN_DATE_ADDED = "dateAdded";
         public static final String COLUMN_DATE_EXP = "dateExp";
+        public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_TIMESTAMP = "timestamp";
+
     }
 }

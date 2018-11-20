@@ -2,28 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="2dp">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fridgeName"
-        android:text="Empty Item"
-        android:textSize="20sp"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dateAddedBox"
-        android:text="Date Added"
-        android:textSize="10sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fridgeName"
+            android:text="Empty Item"
+            android:textStyle="bold"
+            android:layout_alignParentLeft="true"
+            android:textSize="20sp"/>
 
-    <TextView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/quantity"
+            android:text="Quantity"
+            android:layout_alignParentRight="true"
+            android:textStyle="italic"
+            android:textSize="20sp"/>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/expBox"
-        android:text="Expiration Date"
-        android:textSize="10sp"/>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Added: "
+            android:id="@+id/dateAddedRel"
+            android:layout_alignParentLeft="true"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateAddedBox"
+            android:layout_toRightOf="@+id/dateAddedRel"
+            android:text="Date Added"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expiration Date: "
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/expBox"
+            android:text="Expiration Date"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"

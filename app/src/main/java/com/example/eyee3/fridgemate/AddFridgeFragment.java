@@ -28,6 +28,7 @@ public class AddFridgeFragment extends Fragment {
     private TextInputEditText nameBox;
     private TextInputEditText dateBox;
     private TextInputEditText expirationBox;
+    private TextInputEditText quantityBox;
     private Button addItem;
     DatePickerDialog picker;
 
@@ -46,6 +47,7 @@ public class AddFridgeFragment extends Fragment {
         nameBox = (TextInputEditText) getView().findViewById(R.id.nameInput);
         dateBox = (TextInputEditText) getView().findViewById(R.id.dateInput);
         expirationBox = (TextInputEditText) getView().findViewById(R.id.expirationInput);
+        quantityBox = (TextInputEditText) getView().findViewById(R.id.quantityInput);
         addItem = (Button) getView().findViewById(R.id.addItemToFridge);
 
         addItem.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +56,13 @@ public class AddFridgeFragment extends Fragment {
                 String item = nameBox.getText().toString();
                 String dateAdded = dateBox.getText().toString();
                 String exp = expirationBox.getText().toString();
+                String quan = quantityBox.getText().toString();
+
                 ContentValues cv = new ContentValues();
                 cv.put(FridgeContract.FridgeEntry.COLUMN_NAMEF, item);
                 cv.put(FridgeContract.FridgeEntry.COLUMN_DATE_ADDED, dateAdded);
                 cv.put(FridgeContract.FridgeEntry.COLUMN_DATE_EXP, exp);
+                cv.put(FridgeContract.FridgeEntry.COLUMN_QUANTITY, quan);
 
                 if (item.equals("") || nameBox.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "You can't add an empty item!", Toast.LENGTH_SHORT).show();

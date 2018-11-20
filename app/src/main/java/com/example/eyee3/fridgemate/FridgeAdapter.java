@@ -20,12 +20,14 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeView
         public TextView nameText;
         public TextView addedText;
         public TextView expText;
+        public TextView quantity;
 
         public FridgeViewHolder(View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.fridgeName);
             addedText = itemView.findViewById(R.id.dateAddedBox);
             expText = itemView.findViewById(R.id.expBox);
+            quantity = itemView.findViewById(R.id.quantity);
         }
     }
 
@@ -45,11 +47,13 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeView
         String nameF = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_NAMEF));
         String dateAdded = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_ADDED));
         String exp = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_EXP));
+        String quan = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_QUANTITY));
         long id = fCursor.getLong(fCursor.getColumnIndex(GroceryContract.GroceryEntry._ID));
 
         fridgeViewHolder.nameText.setText(nameF);
         fridgeViewHolder.addedText.setText(dateAdded);
         fridgeViewHolder.expText.setText(exp);
+        fridgeViewHolder.quantity.setText(quan);
         fridgeViewHolder.itemView.setTag(id);
     }
 

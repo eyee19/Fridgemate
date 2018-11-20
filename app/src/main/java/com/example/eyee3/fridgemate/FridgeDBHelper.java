@@ -19,6 +19,7 @@ public class FridgeDBHelper extends SQLiteOpenHelper {
                 FridgeContract.FridgeEntry.COLUMN_NAMEF + " TEXT NOT NULL, " +
                 FridgeContract.FridgeEntry.COLUMN_DATE_ADDED + " TEXT NOT NULL, " +
                 FridgeContract.FridgeEntry.COLUMN_DATE_EXP + " TEXT NOT NULL, " +
+                FridgeContract.FridgeEntry.COLUMN_QUANTITY + " TEXT NOT NULL, " +
                 FridgeContract.FridgeEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                 ");";
 

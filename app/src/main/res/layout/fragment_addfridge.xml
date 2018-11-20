@@ -12,7 +12,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/nameInput"
-                android:hint="Item Name"
+                android:hint="Item Name (e.g. Apples)"
                 android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -51,11 +51,25 @@
             android:hint="Date of Expiration" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/darkMode"
+        android:layout_below="@+id/expirationBox"
+        android:id="@+id/quantityBox">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/quantityInput"
+            android:hint="Quantity (e.g. 14 oz)"
+            android:textColor="@color/white"/>
+    </android.support.design.widget.TextInputLayout>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/addItemToFridge"
-        android:layout_below="@+id/expirationBox"
+        android:layout_below="@+id/quantityBox"
         android:text="Add To Fridge"
         android:textColor="@color/appBar"/>
 </RelativeLayout>
