@@ -29,8 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColorHint="@color/darkMode"
+            android:inputType="textCapSentences"
             android:layout_marginLeft="16dp"
-            android:hint="Item"/>
+            android:hint="Item Name"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabList"

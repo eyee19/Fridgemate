@@ -19,8 +19,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AddFridgeFragment extends Fragment {
@@ -58,19 +60,30 @@ public class AddFridgeFragment extends Fragment {
                 String exp = expirationBox.getText().toString();
                 String quan = quantityBox.getText().toString();
 
+                SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+
                 ContentValues cv = new ContentValues();
                 cv.put(FridgeContract.FridgeEntry.COLUMN_NAMEF, item);
                 cv.put(FridgeContract.FridgeEntry.COLUMN_DATE_ADDED, dateAdded);
                 cv.put(FridgeContract.FridgeEntry.COLUMN_DATE_EXP, exp);
                 cv.put(FridgeContract.FridgeEntry.COLUMN_QUANTITY, quan);
 
-                if (item.equals("") || nameBox.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "You can't add an empty item!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Fdatabase.insert(FridgeContract.FridgeEntry.TABLE_NAME, null, cv);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new FridgeFragment()).commit();
+                try {
+                    Date add = sdf.parse(dateAdded);
+                    Date expire = sdf.parse(exp);
+                    if(expire.before(add)) {
+                        Toast.makeText(getActivity(), "Expiration date cannot be before added date!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (item.equals("") || nameBox.getText().toString().trim().length() == 0) {
+                        Toast.makeText(getActivity(), "You can't add an empty item!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Fdatabase.insert(FridgeContract.FridgeEntry.TABLE_NAME, null, cv);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new FridgeFragment()).commit();
+                    }
+                } catch(ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });

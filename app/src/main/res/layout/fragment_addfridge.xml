@@ -13,6 +13,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/nameInput"
                 android:hint="Item Name (e.g. Apples)"
+                android:inputType="textCapSentences"
                 android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -62,6 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/quantityInput"
             android:hint="Quantity (e.g. 14 oz)"
+            android:inputType="textCapSentences"
             android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
