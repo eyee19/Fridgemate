@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_fridge);
     }
 
-    @Override
+    /*@Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return super.dispatchTouchEvent(event);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
