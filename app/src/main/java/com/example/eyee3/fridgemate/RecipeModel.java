@@ -1,9 +1,12 @@
 package com.example.eyee3.fridgemate;
 
+import android.graphics.Bitmap;
+
 public class RecipeModel {
     String cardName;
     String ingredientsList;
     String link;
+    Bitmap pictureLink;
     int isturned;
 
     public int getIsturned() {
@@ -30,5 +33,11 @@ public class RecipeModel {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Bitmap getPictureLink() { return pictureLink; }
+
+    public void setPictureLink(Bitmap pictureLink) {
+        this.pictureLink = pictureLink;
     }
 }

@@ -37,9 +37,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -131,17 +133,6 @@ public class CardFragment extends Fragment {
         });
     }
 
-    /*public void initializeList() {
-        listitems.clear();
-
-        for(int i = 0; i < 11; i++){
-            RecipeModel item = new RecipeModel();
-            item.setCardName(Recipes[i]);
-            item.setIsturned(0);
-            listitems.add(item);
-        }
-    }*/
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView ingredientsTextView;
@@ -154,7 +145,6 @@ public class CardFragment extends Fragment {
             ingredientsTextView = (TextView) v.findViewById(R.id.ingredientsTextView);
             labelTextView = (TextView) v.findViewById(R.id.labelTextView);
             thumbImage = (ImageView) v.findViewById(R.id.picture);
-
         }
     }
 
@@ -180,6 +170,7 @@ public class CardFragment extends Fragment {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             holder.titleTextView.setText(list.get(position).getCardName());
             holder.ingredientsTextView.setText(list.get(position).getIngredientsList());
+            holder.thumbImage.setImageBitmap(list.get(position).getPictureLink());
             holder.titleTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -198,6 +189,7 @@ public class CardFragment extends Fragment {
                     startActivity(i);
                 }
             });
+
         }
 
         @Override
@@ -220,7 +212,6 @@ public class CardFragment extends Fragment {
     }
 
     class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
-        ImageView thumb = getView().findViewById(R.id.picture);
         private Exception exception;
 
         protected void onPreExecute() {
@@ -260,7 +251,6 @@ public class CardFragment extends Fragment {
 
             try {
                 JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-
                 JSONArray results = object.getJSONArray("results");
 
                 listitems.clear();
@@ -271,51 +261,35 @@ public class CardFragment extends Fragment {
                     String title = recipe.getString("title");
                     String link = recipe.getString("href");
                     String ingredients = recipe.getString("ingredients");
-                    String thumbnailpic = recipe.getString("thumbnail");
+                    final String thumbnailpic = recipe.getString("thumbnail");
 
                     String trimmedTitle = title.replaceAll("(\\r|\\n|\\t)", "");
                     String evenMoreTrim = trimmedTitle.trim();
-                    //new DownloadImageTask(thumb).execute(thumbnailpic);
-                    /*if (thumb == null) {
-                        Picasso.with(getActivity()).load("https://i.imgur.com/DvpvklR.png").into(thumb);
-                    }
-                    else {
-                        Picasso.with(getActivity()).load(thumbnailpic).into(thumb);
-                    }*/
 
-                    RecipeModel item = new RecipeModel();
+                    //Log.d("CardFragment", "THE URL OF THE IMAGE IS: " + thumbnailpic);
+
+                    final RecipeModel item = new RecipeModel();
                     item.setCardName(evenMoreTrim);
                     item.setLink(link);
                     item.setIngredientsList(ingredients);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try  {
+                                Bitmap bitmapUpdated = BitmapFactory.decodeStream((InputStream)new URL(thumbnailpic).getContent());
+                                item.setPictureLink(bitmapUpdated);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
                     listitems.add(item);
                     MyRecyclerView.getAdapter().notifyDataSetChanged();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
         }
     }
 }
