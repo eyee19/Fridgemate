@@ -14,11 +14,12 @@
 
             <ImageView
                 android:id="@+id/picture"
-                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/fridge_splash"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/fridge_splash" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -1,7 +1,5 @@
 package com.example.eyee3.fridgemate;
 
-import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,9 +9,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,15 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,8 +53,7 @@ public class CardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //initializeList();
-        getActivity().setTitle("Recipes");
+        getActivity().setTitle("Recipes"); //Sets the title of the fragment on screen
     }
 
     @Override
@@ -89,11 +80,11 @@ public class CardFragment extends Fragment {
 
         addSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //Checking if text box is empty
                 if (searchInput.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else { //Appends the search word to the query string
                     searching.append(searchInput.getText().toString() + ",");
                     searchInput.setText("");
                     addBool = true;
@@ -106,7 +97,7 @@ public class CardFragment extends Fragment {
             public void onClick(View v) {
                 searchInput.setText("");
                 searching.setText("");
-                addBool = false;
+                addBool = false; //addBool is used to determine whether or not the user has input an item yet
             }
         });
 
@@ -119,15 +110,14 @@ public class CardFragment extends Fragment {
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
                 boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
                 if (addBool == true && isConnected == true) {
-                    new RetrieveFeedTask().execute();
-                    //searching.setText("");
+                    new RetrieveFeedTask().execute(); //Begins async task
                     addBool = false;
                 }
                 else if (isConnected == false) {
                     Toast.makeText(getActivity(), "Error: no internet connection", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(getActivity(), "Add An Item to Search First", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Add an item to search first", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -157,7 +147,6 @@ public class CardFragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
-            // create a new view
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recycle_items, parent, false);
             view.setOnClickListener(CardFragment.myOnClickListener);
@@ -173,7 +162,7 @@ public class CardFragment extends Fragment {
             holder.thumbImage.setImageBitmap(list.get(position).getPictureLink());
             holder.titleTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) { //onClickListeners for when user clicks on recipe card, opens in browser
                     String url = list.get(position).getLink();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
@@ -189,7 +178,15 @@ public class CardFragment extends Fragment {
                     startActivity(i);
                 }
             });
-
+            holder.thumbImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = list.get(position).getLink();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
         }
 
         @Override
@@ -224,7 +221,7 @@ public class CardFragment extends Fragment {
             try {
                 URL url = new URL(API_URL + fullSearch);
                 Log.d("CardFragment", "THE URL: " + url);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //Opening the connection
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     StringBuilder stringBuilder = new StringBuilder();
@@ -250,11 +247,11 @@ public class CardFragment extends Fragment {
             }
 
             try {
-                JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
+                JSONObject object = (JSONObject) new JSONTokener(response).nextValue(); //Retrieving results from API as a JSON object
                 JSONArray results = object.getJSONArray("results");
 
-                listitems.clear();
-                for(int n = 0; n < results.length(); n++)
+                listitems.clear(); //Clears any previous searches
+                for(int n = 0; n < results.length(); n++) //Loops through API response and stores in database
                 {
                     JSONObject recipe = results.getJSONObject(n);
 
@@ -263,10 +260,8 @@ public class CardFragment extends Fragment {
                     String ingredients = recipe.getString("ingredients");
                     final String thumbnailpic = recipe.getString("thumbnail");
 
-                    String trimmedTitle = title.replaceAll("(\\r|\\n|\\t)", "");
+                    String trimmedTitle = title.replaceAll("(\\r|\\n|\\t)", ""); //Removes unnecessary new line characters
                     String evenMoreTrim = trimmedTitle.trim();
-
-                    //Log.d("CardFragment", "THE URL OF THE IMAGE IS: " + thumbnailpic);
 
                     final RecipeModel item = new RecipeModel();
                     item.setCardName(evenMoreTrim);
@@ -274,10 +269,11 @@ public class CardFragment extends Fragment {
                     item.setIngredientsList(ingredients);
                     Thread thread = new Thread(new Runnable() {
                         @Override
-                        public void run() {
+                        public void run() { //Converting the URL into a Bitmap and resizing it
                             try  {
                                 Bitmap bitmapUpdated = BitmapFactory.decodeStream((InputStream)new URL(thumbnailpic).getContent());
-                                item.setPictureLink(bitmapUpdated);
+                                Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmapUpdated, 360, 360, false);
+                                item.setPictureLink(resizedBitmap);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

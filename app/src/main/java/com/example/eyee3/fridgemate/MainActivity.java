@@ -95,8 +95,7 @@ public class MainActivity extends AppCompatActivity
 
             alertDialogBuilder
                     .setTitle("About Fridgemate")
-                    .setMessage("Made by: Everett Yee \nVersion 1.0 \n\nFridgemate helps you eat healthier, waste less food, and save you money. " +
-                            "What's not to love about that? ")
+                    .setMessage("Made by: Everett Yee \nVersion 1.0")
                     .setCancelable(false)
                     .setPositiveButton("Okay",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity
                     .setCancelable(false)
                     .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
-                            String url = "http://www.github.com/eyee19";
+                            String url = "http://www.github.com/eyee19/Fridgemate";
                             Intent i = new Intent(Intent.ACTION_VIEW);
                             i.setData(Uri.parse(url));
                             startActivity(i);
