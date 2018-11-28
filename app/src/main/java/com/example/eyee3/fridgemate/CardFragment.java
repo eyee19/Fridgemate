@@ -14,7 +14,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -178,13 +180,16 @@ public class CardFragment extends Fragment {
                     startActivity(i);
                 }
             });
-            holder.thumbImage.setOnClickListener(new View.OnClickListener() {
+            holder.thumbImage.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
-                    String url = list.get(position).getLink();
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+                public boolean onLongClick(View v) {
+                    String savedTitle = list.get(position).getCardName();
+                    String savedIngredients = list.get(position).getIngredientsList();
+                    String savedLink = list.get(position).getLink();
+                    Bitmap savedThumb = list.get(position).getPictureLink();
+                    Toast.makeText(getActivity(), "\"" + savedTitle + "\" added to saved recipes", Toast.LENGTH_SHORT).show();
+                    Log.d("CardFragment", "I GOT: " + savedTitle + savedIngredients + savedLink);
+                    return false;
                 }
             });
         }
