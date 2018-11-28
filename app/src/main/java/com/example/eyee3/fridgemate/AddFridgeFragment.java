@@ -68,7 +68,7 @@ public class AddFridgeFragment extends Fragment {
                 String exp = expirationBox.getText().toString();
                 String quan = quantityBox.getText().toString();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
                 ContentValues cv = new ContentValues();
                 cv.put(FridgeContract.FridgeEntry.COLUMN_NAMEF, item);
