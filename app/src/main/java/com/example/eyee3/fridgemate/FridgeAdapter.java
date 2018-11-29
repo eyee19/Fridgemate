@@ -48,7 +48,7 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeView
         String dateAdded = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_ADDED));
         String exp = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_EXP));
         String quan = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_QUANTITY));
-        long id = fCursor.getLong(fCursor.getColumnIndex(GroceryContract.GroceryEntry._ID));
+        long id = fCursor.getLong(fCursor.getColumnIndex(FridgeContract.FridgeEntry._ID));
 
         fridgeViewHolder.nameText.setText(nameF);
         fridgeViewHolder.addedText.setText(dateAdded);

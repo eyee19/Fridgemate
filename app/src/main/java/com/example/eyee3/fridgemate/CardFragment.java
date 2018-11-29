@@ -1,7 +1,10 @@
 package com.example.eyee3.fridgemate;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -159,6 +162,9 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
+            final SQLiteDatabase sDatabase;
+            SavedDBHelper dbHelperS = new SavedDBHelper(getActivity());
+            sDatabase = dbHelperS.getWritableDatabase();
             holder.titleTextView.setText(list.get(position).getCardName());
             holder.ingredientsTextView.setText(list.get(position).getIngredientsList());
             holder.thumbImage.setImageBitmap(list.get(position).getPictureLink());
@@ -184,11 +190,17 @@ public class CardFragment extends Fragment {
                 @Override
                 public boolean onLongClick(View v) {
                     String savedTitle = list.get(position).getCardName();
-                    String savedIngredients = list.get(position).getIngredientsList();
+                    //String savedIngredients = list.get(position).getIngredientsList();
                     String savedLink = list.get(position).getLink();
-                    Bitmap savedThumb = list.get(position).getPictureLink();
+                    //Bitmap savedThumb = list.get(position).getPictureLink();
                     Toast.makeText(getActivity(), "\"" + savedTitle + "\" added to saved recipes", Toast.LENGTH_SHORT).show();
-                    Log.d("CardFragment", "I GOT: " + savedTitle + savedIngredients + savedLink);
+                    Log.d("CardFragment", "I GOT: " + savedTitle + savedLink);
+
+                    ContentValues cv = new ContentValues();
+                    cv.put(SavedContract.SavedEntry.COLUMN_NAMES, savedTitle);
+                    cv.put(SavedContract.SavedEntry.COLUMN_LINK, savedLink);
+
+                    sDatabase.insert(SavedContract.SavedEntry.TABLE_NAME, null, cv);
                     return false;
                 }
             });
