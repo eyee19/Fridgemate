@@ -46,9 +46,9 @@ import java.util.Calendar;
 public class CardFragment extends Fragment {
     ArrayList<RecipeModel> listitems = new ArrayList<>();
     EditText searchInput;
-    ImageButton addSearch;
     ImageButton clearAll;
     ImageButton goSearch;
+    TextView resultsForBox;
     TextView searching;
     static View.OnClickListener myOnClickListener;
     boolean addBool = false;
@@ -78,30 +78,17 @@ public class CardFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         searchInput = (EditText) view.findViewById(R.id.searchBox);
-        addSearch = (ImageButton) view.findViewById(R.id.plus);
         clearAll = (ImageButton) view.findViewById(R.id.clearAll);
         goSearch = (ImageButton) view.findViewById(R.id.search);
+        resultsForBox = (TextView) view.findViewById(R.id.resultsForBox);
         searching = (TextView) view.findViewById(R.id.searchingFor);
-
-        addSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { //Checking if text box is empty
-                if (searchInput.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
-                }
-                else { //Appends the search word to the query string
-                    searching.append(searchInput.getText().toString() + ",");
-                    searchInput.setText("");
-                    addBool = true;
-                }
-            }
-        });
 
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchInput.setText("");
                 searching.setText("");
+                Toast.makeText(getActivity(), "Cleared Search", Toast.LENGTH_SHORT).show();
                 addBool = false; //addBool is used to determine whether or not the user has input an item yet
             }
         });
@@ -114,12 +101,18 @@ public class CardFragment extends Fragment {
 
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
                 boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-                if (addBool == true && isConnected == true) {
+
+                if (searchInput.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
+                }
+                else if (isConnected == true) {
+                    searching.append(searchInput.getText().toString());
+                    searchInput.setText("");
                     new RetrieveFeedTask().execute(); //Begins async task
                     addBool = false;
                 }
                 else if (isConnected == false) {
-                    Toast.makeText(getActivity(), "Error: no internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "No internet connection", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(getActivity(), "Add an item to search first", Toast.LENGTH_SHORT).show();
@@ -234,9 +227,10 @@ public class CardFragment extends Fragment {
 
         protected String doInBackground(Void... urls) {
             String fullSearch = searching.getText().toString();
+            String removeSpace = fullSearch.replaceAll("\\s+","");
 
             try {
-                URL url = new URL(API_URL + fullSearch);
+                URL url = new URL(API_URL + removeSpace);
                 Log.d("CardFragment", "THE URL: " + url);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //Opening the connection
                 try {

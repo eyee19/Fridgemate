@@ -3,11 +3,21 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/background">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/topLayout"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_left_margin"
+        android:layout_marginRight="@dimen/activity_right_margin"
+        android:layout_alignParentBottom="true"
         android:id="@+id/topLayout"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <EditText
             android:layout_width="match_parent"
@@ -18,45 +28,52 @@
             android:textColor="@color/white"
             android:textColorHint="@color/darkMode"/>
 
-        <ImageButton
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/plus"
-            android:src="@drawable/ic_add_black_24dp"
-            android:scaleType="centerInside"/>
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/clearAll"
-            android:src="@drawable/ic_delete_black_24dp"
-            android:scaleType="centerInside"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:id="@+id/resultsForBox"
+                android:text="Results for:"
+                android:textSize="6pt"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchingFor"
+                android:layout_weight="0.3"
+                android:hint="nothing entered yet"
+                android:textColorHint="@color/white"
+                android:textSize="6pt" />
+        </LinearLayout>
 
-        <ImageButton
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/search"
-            android:layout_weight="1"
-            android:src="@drawable/ic_send_black_24dp"
-            android:scaleType="centerInside"/>
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/clearAll"
+                android:src="@drawable/ic_delete_black_24dp"
+                android:scaleType="centerInside"/>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                android:layout_weight="1"
+                android:src="@drawable/ic_send_black_24dp"
+                android:scaleType="centerInside"/>
+        </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchingFor"
-        android:textSize="6pt"
-        android:layout_below="@id/topLayout"
-        android:hint="Add one word at a time"
-        android:textColorHint="@color/white"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cardView"
-        android:layout_below="@id/searchingFor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>
