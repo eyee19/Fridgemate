@@ -67,11 +67,28 @@
             android:textColor="@color/white"/>
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addItemToFridge"
         android:layout_below="@+id/quantityBox"
-        android:text="Add To Fridge"
-        android:textColor="@color/appBar"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            android:text="Cancel"
+            android:layout_weight="1"
+            android:textColor="@color/appBar"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/addItemToFridge"
+            android:text="Add To Fridge"
+            android:layout_weight="1"
+            android:textColor="@color/appBar"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.example.eyee3.fridgemate.GroceryContract.*;
 
-public class GroceryDBHelper extends SQLiteOpenHelper {
+public class GroceryDBHelper extends SQLiteOpenHelper { //Database helper for shopping list
     public static final String DATABASE_NAME = "grocerylist.db";
     public static final int DATABASE_VERSION = 1;
     public GroceryDBHelper(Context context) {

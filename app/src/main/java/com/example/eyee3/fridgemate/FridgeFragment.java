@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FridgeFragment extends Fragment {
+public class FridgeFragment extends Fragment { //Fragment for displaying Fridge items
 
     public FridgeFragment() {
 
@@ -45,6 +45,7 @@ public class FridgeFragment extends Fragment {
         fAdapter = new FridgeAdapter(getActivity(), getAllItems());
         recyclerViewF.setAdapter(fAdapter);
 
+        //For swiping left/right to delete an item
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -69,7 +70,7 @@ public class FridgeFragment extends Fragment {
         });
     }
 
-    private Cursor getAllItems() {
+    private Cursor getAllItems() { //Organizes RecyclerView items by their timestamp
         return Fdatabase.query(
                 FridgeContract.FridgeEntry.TABLE_NAME,
                 null,
@@ -81,7 +82,7 @@ public class FridgeFragment extends Fragment {
         );
     }
 
-    private void removeItem(long id) {
+    private void removeItem(long id) { //Deleting item from database
         Fdatabase.delete(FridgeContract.FridgeEntry.TABLE_NAME,
                 FridgeContract.FridgeEntry._ID + "=" + id, null);
         fAdapter.swapCursor(getAllItems());

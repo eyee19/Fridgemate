@@ -1,12 +1,10 @@
 package com.example.eyee3.fridgemate;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +12,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class SavedFragment extends Fragment {
+public class SavedFragment extends Fragment { //Fragment for displaying saved recipes
     private SQLiteDatabase sDatabase;
     private SavedAdapter sAdapter;
 
@@ -42,6 +38,7 @@ public class SavedFragment extends Fragment {
         sAdapter = new SavedAdapter(getActivity(), getAllItems());
         recyclerView.setAdapter(sAdapter);
 
+        //Swiping left/right to delete saved recipes
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -54,16 +51,9 @@ public class SavedFragment extends Fragment {
                 removeItem((long) viewHolder.itemView.getTag());
             }
         }).attachToRecyclerView(recyclerView);
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show(); //doesn't work yet
-            }
-        });
     }
 
-    private Cursor getAllItems() {
+    private Cursor getAllItems() { //Displaying all saved recipes by timestamp in descending order
         return sDatabase.query(
                 SavedContract.SavedEntry.TABLE_NAME,
                 null,
@@ -75,7 +65,7 @@ public class SavedFragment extends Fragment {
         );
     }
 
-    private void removeItem(long id) {
+    private void removeItem(long id) { //Deleting saved recipes
         sDatabase.delete(SavedContract.SavedEntry.TABLE_NAME,
                 SavedContract.SavedEntry._ID + "=" + id, null);
         sAdapter.swapCursor(getAllItems());

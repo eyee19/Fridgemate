@@ -3,9 +3,8 @@ package com.example.eyee3.fridgemate;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity { //Activity for displaying the splash screen when app opens
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,8 +13,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(),
                 MainActivity.class);
-
-        Log.d("SPLASH SCREEN", "SPLASH SCREEN SUCCESS");
 
         startActivity(intent);
         finish();

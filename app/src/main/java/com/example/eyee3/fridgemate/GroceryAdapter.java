@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.GroceryViewHolder> {
+public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.GroceryViewHolder> { //Adapter for shopping list RecyclerView
     private Context mContext;
     private Cursor mCursor;
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class FridgeDBHelper extends SQLiteOpenHelper {
+public class FridgeDBHelper extends SQLiteOpenHelper { //Database helper for Fridge
     public static final String DATABASE_NAME = "fridgelist.db";
     public static final int DATABASE_VERSION = 1;
     public FridgeDBHelper(Context context) {

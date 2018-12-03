@@ -2,20 +2,11 @@ package com.example.eyee3.fridgemate;
 
 import android.graphics.Bitmap;
 
-public class RecipeModel {
+public class RecipeModel { //Class for structuring a recipe item
     String cardName;
     String ingredientsList;
     String link;
     Bitmap pictureLink;
-    int isturned;
-
-    public int getIsturned() {
-        return isturned;
-    }
-
-    public void setIsturned(int isturned) {
-        this.isturned = isturned;
-    }
 
     public String getCardName() {
         return cardName;

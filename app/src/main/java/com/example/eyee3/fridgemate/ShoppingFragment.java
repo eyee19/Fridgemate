@@ -31,7 +31,7 @@ import java.util.List;
 
 import static android.support.v7.widget.DividerItemDecoration.HORIZONTAL;
 
-public class ShoppingFragment extends Fragment {
+public class ShoppingFragment extends Fragment { //Fragment for shopping list
 
     public ShoppingFragment() {
 
@@ -58,6 +58,7 @@ public class ShoppingFragment extends Fragment {
         mAdapter = new GroceryAdapter(getActivity(), getAllItems());
         recyclerView.setAdapter(mAdapter);
 
+        //Swiping left/right to delete items from shopping list
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -93,7 +94,7 @@ public class ShoppingFragment extends Fragment {
         });
     }
 
-    private Cursor getAllItems() {
+    private Cursor getAllItems() { //Displaying items in descending order sorted by timestamp
         return mDatabase.query(
                 GroceryContract.GroceryEntry.TABLE_NAME,
                 null,
@@ -105,7 +106,7 @@ public class ShoppingFragment extends Fragment {
         );
     }
 
-    private void removeItem(long id) {
+    private void removeItem(long id) { //Deleting item from shopping list
         mDatabase.delete(GroceryContract.GroceryEntry.TABLE_NAME,
                 GroceryContract.GroceryEntry._ID + "=" + id, null);
         mAdapter.swapCursor(getAllItems());

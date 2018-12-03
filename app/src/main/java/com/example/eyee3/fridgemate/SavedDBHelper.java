@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class SavedDBHelper extends SQLiteOpenHelper {
+public class SavedDBHelper extends SQLiteOpenHelper { //Database helper for saved recipes
     public static final String DATABASE_NAME = "savedlist.db";
     public static final int DATABASE_VERSION = 1;
     public SavedDBHelper(Context context) {

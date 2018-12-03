@@ -3,7 +3,6 @@ package com.example.eyee3.fridgemate;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,9 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -27,23 +24,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-public class CardFragment extends Fragment {
+public class CardFragment extends Fragment { //Fragment for displaying the recipes
     ArrayList<RecipeModel> listitems = new ArrayList<>();
     EditText searchInput;
     ImageButton clearAll;
@@ -99,14 +91,14 @@ public class CardFragment extends Fragment {
                 ConnectivityManager cm =
                         (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo(); //Checking if there is an internet connection
                 boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
                 if (searchInput.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
                 }
                 else if (isConnected == true) {
-                    searching.append(searchInput.getText().toString());
+                    searching.setText(searchInput.getText().toString());
                     searchInput.setText("");
                     new RetrieveFeedTask().execute(); //Begins async task
                     addBool = false;
@@ -182,12 +174,9 @@ public class CardFragment extends Fragment {
             holder.thumbImage.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    String savedTitle = list.get(position).getCardName();
-                    //String savedIngredients = list.get(position).getIngredientsList();
+                    String savedTitle = list.get(position).getCardName(); //Long click the picture and it will save the recipe
                     String savedLink = list.get(position).getLink();
-                    //Bitmap savedThumb = list.get(position).getPictureLink();
                     Toast.makeText(getActivity(), "\"" + savedTitle + "\" added to saved recipes", Toast.LENGTH_SHORT).show();
-                    Log.d("CardFragment", "I GOT: " + savedTitle + savedLink);
 
                     ContentValues cv = new ContentValues();
                     cv.put(SavedContract.SavedEntry.COLUMN_NAMES, savedTitle);
@@ -271,7 +260,7 @@ public class CardFragment extends Fragment {
                     String ingredients = recipe.getString("ingredients");
                     final String thumbnailpic = recipe.getString("thumbnail");
 
-                    String trimmedTitle = title.replaceAll("(\\r|\\n|\\t)", ""); //Removes unnecessary new line characters
+                    String trimmedTitle = title.replaceAll("(\\r|\\n|\\t|&amp;)", ""); //Removes unnecessary new line characters
                     String evenMoreTrim = trimmedTitle.trim();
 
                     final RecipeModel item = new RecipeModel();

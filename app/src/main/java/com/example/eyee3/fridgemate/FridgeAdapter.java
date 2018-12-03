@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeViewHolder> {
+public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeViewHolder> { //Adapter for Fridge RecyclerView
     private Context fContext;
     private Cursor fCursor;
 
@@ -43,7 +43,7 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.FridgeView
         if (!fCursor.moveToPosition(i)) {
             return;
         }
-
+        //Retrieving from database and displaying in RecyclerView item
         String nameF = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_NAMEF));
         String dateAdded = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_ADDED));
         String exp = fCursor.getString(fCursor.getColumnIndex(FridgeContract.FridgeEntry.COLUMN_DATE_EXP));

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHolder> {
+public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHolder> { //Adapter for saved recipes fragment
     private Context sContext;
     private Cursor sCursor;
 
@@ -50,7 +50,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
         savedViewHolder.savedName.setText(nameS);
         savedViewHolder.itemView.setTag(id);
 
-        savedViewHolder.savedName.setOnClickListener(new View.OnClickListener() {
+        savedViewHolder.savedName.setOnClickListener(new View.OnClickListener() { //Clicking on saved recipe opens it in browser
             @Override
             public void onClick(View v) {
                 String url = linkS;

@@ -2,7 +2,7 @@ package com.example.eyee3.fridgemate;
 
 import android.provider.BaseColumns;
 
-public class SavedContract {
+public class SavedContract { //Contract database for saved recipes, declaring columns
     private SavedContract() {}
 
     public static final class SavedEntry implements BaseColumns {
