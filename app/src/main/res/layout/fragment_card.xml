@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/searchBox"
             android:layout_weight="0.4"
-            android:hint="Search Recipes"
+            android:hint="Enter comma-separated items"
             android:textColor="@color/white"
             android:textColorHint="@color/darkMode"/>
 
