@@ -95,7 +95,7 @@ public class CardFragment extends Fragment { //Fragment for displaying the recip
                 boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
                 if (searchInput.getText().toString().equals("")) {
-                    Toast.makeText(getActivity(), "Enter an item to add", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Enter at least one item to search", Toast.LENGTH_SHORT).show();
                 }
                 else if (isConnected == true) {
                     searching.setText(searchInput.getText().toString());
