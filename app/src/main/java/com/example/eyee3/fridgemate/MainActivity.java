@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
                     .setCancelable(false)
                     .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
-                            String url = "http://www.github.com/eyee19/Fridgemate";
+                            String url = "http://www.github.com/eyee19/Fridgemate/blob/master/README.md";
                             Intent i = new Intent(Intent.ACTION_VIEW);
                             i.setData(Uri.parse(url));
                             startActivity(i);
